@@ -1,0 +1,12 @@
+﻿<Project>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+
+        <!-- https://github.com/dotnet/roslyn/issues/41640#issuecomment-985780130 -->
+        <NoWarn>$(NoWarn);CS1591;CS1573</NoWarn>
+    </PropertyGroup>
+    
+</Project>

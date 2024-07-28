@@ -11,17 +11,83 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4A3B07F0-5B27-4A84-82B6-F63409C3C302}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queries", "src\Queries\Queries.csproj", "{9FA74209-C023-4E6C-87E3-35649DD36A9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.csproj", "{F36F50B9-36CF-49E5-B8F3-7B1527A5AE5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B2437FEE-9F94-4F3E-BD5A-8945BC67356C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unit", "unit", "{B0016A3E-3D24-4699-943E-0067628D2B9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{E30C667F-30CF-4CFC-8084-3310A49E1521}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParamsCSharpMethodArgumentIdentifier", "tests\unit\Core\ParamsCSharpMethodArgumentIdentifier\ParamsCSharpMethodArgumentIdentifier.csproj", "{2016D962-BB83-41E4-AA59-73951F15F531}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyntacticCSharpMethodAssociator", "tests\unit\Core\SyntacticCSharpMethodAssociator\SyntacticCSharpMethodAssociator.csproj", "{B9948DA1-6290-4785-915B-165EC1C7F568}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration", "integration", "{1BD13E51-8485-4865-9B6B-3BC756421B9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D49B06DF-20C5-4E8E-9290-76B79338FFC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ParamsCSharpMethodArgumentIdentifier", "ParamsCSharpMethodArgumentIdentifier", "{179D86F6-AA07-4E88-8329-2B23584B1F8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParamsCSharpMethodArgumentIdentifier_CSharp12", "tests\integration\Core\ParamsCSharpMethodArgumentIdentifier\CSharp12\ParamsCSharpMethodArgumentIdentifier_CSharp12.csproj", "{7B874C66-C7CE-4C55-BC6D-0917808946E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SyntacticCSharpMethodAssociator", "SyntacticCSharpMethodAssociator", "{E301D241-7423-4CD1-A573-A31CDDC32345}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyntacticCSharpMethodAssociator_CSharp12", "tests\integration\Core\SyntacticCSharpMethodAssociator\CSharp12\SyntacticCSharpMethodAssociator_CSharp12.csproj", "{26544AAF-111F-4088-B723-E3C59C0792FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FA74209-C023-4E6C-87E3-35649DD36A9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA74209-C023-4E6C-87E3-35649DD36A9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA74209-C023-4E6C-87E3-35649DD36A9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA74209-C023-4E6C-87E3-35649DD36A9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F36F50B9-36CF-49E5-B8F3-7B1527A5AE5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F36F50B9-36CF-49E5-B8F3-7B1527A5AE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F36F50B9-36CF-49E5-B8F3-7B1527A5AE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F36F50B9-36CF-49E5-B8F3-7B1527A5AE5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2016D962-BB83-41E4-AA59-73951F15F531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2016D962-BB83-41E4-AA59-73951F15F531}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2016D962-BB83-41E4-AA59-73951F15F531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2016D962-BB83-41E4-AA59-73951F15F531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9948DA1-6290-4785-915B-165EC1C7F568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9948DA1-6290-4785-915B-165EC1C7F568}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9948DA1-6290-4785-915B-165EC1C7F568}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9948DA1-6290-4785-915B-165EC1C7F568}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B874C66-C7CE-4C55-BC6D-0917808946E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B874C66-C7CE-4C55-BC6D-0917808946E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B874C66-C7CE-4C55-BC6D-0917808946E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B874C66-C7CE-4C55-BC6D-0917808946E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26544AAF-111F-4088-B723-E3C59C0792FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26544AAF-111F-4088-B723-E3C59C0792FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26544AAF-111F-4088-B723-E3C59C0792FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26544AAF-111F-4088-B723-E3C59C0792FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03179225-A3B7-47F2-BED2-FFC518DCFD28}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9FA74209-C023-4E6C-87E3-35649DD36A9F} = {4A3B07F0-5B27-4A84-82B6-F63409C3C302}
+		{F36F50B9-36CF-49E5-B8F3-7B1527A5AE5F} = {4A3B07F0-5B27-4A84-82B6-F63409C3C302}
+		{B0016A3E-3D24-4699-943E-0067628D2B9C} = {B2437FEE-9F94-4F3E-BD5A-8945BC67356C}
+		{E30C667F-30CF-4CFC-8084-3310A49E1521} = {B0016A3E-3D24-4699-943E-0067628D2B9C}
+		{2016D962-BB83-41E4-AA59-73951F15F531} = {E30C667F-30CF-4CFC-8084-3310A49E1521}
+		{B9948DA1-6290-4785-915B-165EC1C7F568} = {E30C667F-30CF-4CFC-8084-3310A49E1521}
+		{1BD13E51-8485-4865-9B6B-3BC756421B9E} = {B2437FEE-9F94-4F3E-BD5A-8945BC67356C}
+		{D49B06DF-20C5-4E8E-9290-76B79338FFC4} = {1BD13E51-8485-4865-9B6B-3BC756421B9E}
+		{179D86F6-AA07-4E88-8329-2B23584B1F8E} = {D49B06DF-20C5-4E8E-9290-76B79338FFC4}
+		{7B874C66-C7CE-4C55-BC6D-0917808946E4} = {179D86F6-AA07-4E88-8329-2B23584B1F8E}
+		{E301D241-7423-4CD1-A573-A31CDDC32345} = {D49B06DF-20C5-4E8E-9290-76B79338FFC4}
+		{26544AAF-111F-4088-B723-E3C59C0792FF} = {E301D241-7423-4CD1-A573-A31CDDC32345}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>Paraminter.CSharp.Method.Hesychia</AssemblyName>
+        
+        <PackageId>Paraminter.CSharp.Method.Hesychia</PackageId>
+        <Description>Provides general implementations of services related to a Paraminter associator specialized in syntactic C# method arguments.</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Paraminter.Associators.Queries" />
+        <PackageReference Include="Paraminter.CSharp.Method.Common.Queries.Collectors" />
+        <PackageReference Include="Paraminter.Queries.Handlers" />
+        <PackageReference Include="Paraminter.Queries.Values.Collectors" />
+
+        <ProjectReference Include="$(SolutionDir)\src\Queries\Queries.csproj" />
+    </ItemGroup>
+
+</Project>
