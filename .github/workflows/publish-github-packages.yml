@@ -1,0 +1,23 @@
+name: Publish to GitHub Packages
+
+on:
+  release:
+    types:
+      - released
+
+jobs:
+  publish-github-packages:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    if: ${{ vars.PUBLISH_GH_PACKAGES == 'true' }}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      - name: Publish Packages
+        uses: Paraminter/actions/dotnet/nuget/publish-github-packages@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

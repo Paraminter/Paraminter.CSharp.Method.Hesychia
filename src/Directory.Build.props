@@ -1,0 +1,30 @@
+﻿<Project>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+
+        <IsPackable>true</IsPackable>
+
+        <Owners>Paraminter</Owners>
+        <Authors>ErikWe</Authors>
+        <PackageProjectUrl>https://github.com/Paraminter/Paraminter.CSharp.Method.Hesychia</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Paraminter/Paraminter.CSharp.Method.Hesychia</RepositoryUrl>
+        <PackageReadmeFile>README.nupkg.md</PackageReadmeFile>
+        <PackageIcon>Logo.png</PackageIcon>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="README.nupkg.md" Pack="true" PackagePath="\" />
+        <None Include="$(PkgParaminter_Logo)\Logo.png" Pack="true" PackagePath="\" Visible="false" />
+
+        <PackageReference Include="Paraminter.Logo" PrivateAssets="all" GeneratePathProperty="true" />
+    </ItemGroup>
+
+</Project>

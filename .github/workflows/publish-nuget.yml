@@ -1,0 +1,23 @@
+name: Publish to NuGet
+
+on:
+  release:
+    types:
+      - released
+
+jobs:
+  publish-nuget:
+    name: Publish to NuGet
+    runs-on: ubuntu-latest
+    if: ${{ vars.PUBLISH_NUGET == 'true' }}
+
+    permissions:
+      contents: read
+
+    steps:
+
+      - name: Publish Packages
+        uses: Paraminter/actions/dotnet/nuget/publish-nuget@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          nuget-token: ${{ secrets.NUGET_API_KEY }}

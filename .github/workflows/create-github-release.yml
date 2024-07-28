@@ -1,0 +1,22 @@
+name: Create GitHub Release
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  create-github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Create GitHub Release
+        uses: Paraminter/actions/dotnet/nuget/create-release@v0
+        with:
+          token: ${{ secrets.TRIGGER_TOKEN }}

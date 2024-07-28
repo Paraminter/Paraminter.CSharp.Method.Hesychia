@@ -1,0 +1,15 @@
+﻿<Project>
+
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageVersion Include="Paraminter.Logo" Version="2.0.0-alpha.10" />
+
+        <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.24.0.89429" />
+
+        <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
+    </ItemGroup>
+
+</Project>
