@@ -6,9 +6,12 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 
 using Paraminter.CSharp.Method.Hesychia.Queries;
-using Paraminter.Queries.Values.Collectors;
+using Paraminter.Queries.Values.Commands;
+using Paraminter.Queries.Values.Handlers;
 
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Xunit;
 
@@ -124,11 +127,23 @@ public sealed class Handle
         ResponseWithFalse(source);
     }
 
+    private static Expression<Action<IValuedQueryResponseHandler<TValue>>> SetValueExpression<TValue>(
+        TValue value)
+    {
+        return (handler) => handler.Value.Handle(It.Is(MatchSetValueCommand(value)));
+    }
+
+    private static Expression<Func<ISetQueryResponseValueCommand<TValue>, bool>> MatchSetValueCommand<TValue>(
+        TValue value)
+    {
+        return (command) => Equals(command.Value, value);
+    }
+
     private void Target(
         IIsCSharpMethodArgumentParamsQuery query,
-        IValuedQueryResponseCollector<bool> queryResponseCollector)
+        IValuedQueryResponseHandler<bool> queryResponseHandler)
     {
-        Fixture.Sut.Handle(query, queryResponseCollector);
+        Fixture.Sut.Handle(query, queryResponseHandler);
     }
 
     private void RespondsWithTrue(
@@ -162,15 +177,15 @@ public sealed class Handle
         var syntacticArguments = methodInvocation.ArgumentList.Arguments;
 
         Mock<IIsCSharpMethodArgumentParamsQuery> queryMock = new();
-        Mock<IValuedQueryResponseCollector<bool>> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IValuedQueryResponseHandler<bool>> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Parameter).Returns(parameters[0]);
         queryMock.Setup(static (query) => query.SyntacticArgument).Returns(syntacticArguments[0]);
         queryMock.Setup(static (query) => query.SemanticModel).Returns(semanticModel);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify((collector) => collector.Value.Set(expected), Times.Once());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Value.Set(It.IsAny<bool>()), Times.Once());
+        queryResponseHandlerMock.Verify(SetValueExpression(expected), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Value.Handle(It.IsAny<ISetQueryResponseValueCommand<bool>>()), Times.Once());
     }
 }

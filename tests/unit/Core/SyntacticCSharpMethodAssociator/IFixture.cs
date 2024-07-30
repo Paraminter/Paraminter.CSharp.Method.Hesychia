@@ -4,13 +4,13 @@ using Moq;
 
 using Paraminter.Associators.Queries;
 using Paraminter.CSharp.Method.Hesychia.Queries;
-using Paraminter.CSharp.Method.Queries.Collectors;
+using Paraminter.CSharp.Method.Queries.Handlers;
 using Paraminter.Queries.Handlers;
-using Paraminter.Queries.Values.Collectors;
+using Paraminter.Queries.Values.Handlers;
 
 internal interface IFixture
 {
-    public abstract IQueryHandler<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>, IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> Sut { get; }
+    public abstract IQueryHandler<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>, IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> Sut { get; }
 
-    public abstract Mock<IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>>> ParamsArgumentIdentifierMock { get; }
+    public abstract Mock<IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>>> ParamsArgumentIdentifierMock { get; }
 }

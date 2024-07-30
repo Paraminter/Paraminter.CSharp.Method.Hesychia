@@ -6,9 +6,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Paraminter.Associators.Queries;
 using Paraminter.CSharp.Method.Hesychia.Common;
 using Paraminter.CSharp.Method.Hesychia.Queries;
-using Paraminter.CSharp.Method.Queries.Collectors;
+using Paraminter.CSharp.Method.Queries.Handlers;
 using Paraminter.Queries.Handlers;
-using Paraminter.Queries.Values.Collectors;
+using Paraminter.Queries.Values.Handlers;
 
 using System;
 using System.Collections.Generic;
@@ -16,51 +16,51 @@ using System.Linq;
 
 /// <summary>Associates syntactic C# method arguments.</summary>
 public sealed class SyntacticCSharpMethodAssociator
-    : IQueryHandler<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>, IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector>
+    : IQueryHandler<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>, IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler>
 {
-    private readonly IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>> ParamsArgumentIdentifier;
+    private readonly IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>> ParamsArgumentIdentifier;
 
     /// <summary>Instantiates a <see cref="SyntacticCSharpMethodAssociator"/>, associating syntactic C# method arguments.</summary>
     /// <param name="paramsArgumentIdentifier">Identifies <see langword="params"/> arguments.</param>
     public SyntacticCSharpMethodAssociator(
-        IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>> paramsArgumentIdentifier)
+        IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>> paramsArgumentIdentifier)
     {
         ParamsArgumentIdentifier = paramsArgumentIdentifier ?? throw new ArgumentNullException(nameof(paramsArgumentIdentifier));
     }
 
-    void IQueryHandler<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>, IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector>.Handle(
+    void IQueryHandler<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>, IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler>.Handle(
         IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData> query,
-        IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector queryResponseCollector)
+        IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler queryResponseHandler)
     {
         if (query is null)
         {
             throw new ArgumentNullException(nameof(query));
         }
 
-        if (queryResponseCollector is null)
+        if (queryResponseHandler is null)
         {
-            throw new ArgumentNullException(nameof(queryResponseCollector));
+            throw new ArgumentNullException(nameof(queryResponseHandler));
         }
 
-        Associator.Associate(ParamsArgumentIdentifier, query, queryResponseCollector);
+        Associator.Associate(ParamsArgumentIdentifier, query, queryResponseHandler);
     }
 
     private sealed class Associator
     {
         public static void Associate(
-            IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>> paramsArgumentIdentifier,
+            IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>> paramsArgumentIdentifier,
             IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData> query,
-            IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector queryResponseCollector)
+            IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler queryResponseHandler)
         {
-            var associator = new Associator(paramsArgumentIdentifier, query, queryResponseCollector);
+            var associator = new Associator(paramsArgumentIdentifier, query, queryResponseHandler);
 
             associator.Associate();
         }
 
-        private readonly IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>> ParamsArgumentIdentifier;
+        private readonly IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>> ParamsArgumentIdentifier;
 
         private readonly IAssociateSyntacticCSharpMethodData UnassociatedInvocationData;
-        private readonly IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector QueryResponseCollector;
+        private readonly IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler QueryResponseHandler;
 
         private readonly IDictionary<string, IParameterSymbol> UnparsedParametersByName;
 
@@ -69,13 +69,13 @@ public sealed class SyntacticCSharpMethodAssociator
         private bool HasEncounteredError;
 
         private Associator(
-            IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>> paramsArgumentIdentifier,
+            IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>> paramsArgumentIdentifier,
             IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData> query,
-            IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector queryResponseCollector)
+            IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler queryResponseHandler)
         {
             ParamsArgumentIdentifier = paramsArgumentIdentifier;
             UnassociatedInvocationData = query.Data;
-            QueryResponseCollector = queryResponseCollector;
+            QueryResponseHandler = queryResponseHandler;
 
             UnparsedParametersByName = new Dictionary<string, IParameterSymbol>(query.Data.Parameters.Count, StringComparer.Ordinal);
         }
@@ -89,7 +89,7 @@ public sealed class SyntacticCSharpMethodAssociator
 
             if (HasEncounteredError)
             {
-                QueryResponseCollector.Invalidator.Invalidate();
+                QueryResponseHandler.Invalidator.Handle(InvalidateQueryResponseCommand.Instance);
             }
         }
 
@@ -119,14 +119,18 @@ public sealed class SyntacticCSharpMethodAssociator
             {
                 if (parameter.IsOptional)
                 {
-                    QueryResponseCollector.Associations.Default.Add(parameter);
+                    var command = new AddDefaultCSharpMethodCommand(parameter);
+
+                    QueryResponseHandler.AssociationCollector.Default.Handle(command);
 
                     continue;
                 }
 
                 if (parameter.IsParams)
                 {
-                    QueryResponseCollector.Associations.Params.Add(parameter, []);
+                    var command = new AddParamsCSharpMethodAssociationCommand(parameter, []);
+
+                    QueryResponseHandler.AssociationCollector.Params.Handle(command);
 
                     continue;
                 }
@@ -169,7 +173,9 @@ public sealed class SyntacticCSharpMethodAssociator
         private void AssociateNormalArgument(
             int index)
         {
-            QueryResponseCollector.Associations.Normal.Add(UnassociatedInvocationData.Parameters[index], UnassociatedInvocationData.SyntacticArguments[index]);
+            var command = new AddNormalCSharpMethodAssociationCommand(UnassociatedInvocationData.Parameters[index], UnassociatedInvocationData.SyntacticArguments[index]);
+
+            QueryResponseHandler.AssociationCollector.Normal.Handle(command);
         }
 
         private void AssociateNameColonArgument(
@@ -181,7 +187,7 @@ public sealed class SyntacticCSharpMethodAssociator
                 HasEncounteredOutOfOrderLabelledArgument = true;
             }
 
-            if (UnparsedParametersByName.TryGetValue(nameColonSyntax.Name.Identifier.Text, out var parameterSymbol) is false)
+            if (UnparsedParametersByName.TryGetValue(nameColonSyntax.Name.Identifier.Text, out var parameter) is false)
             {
                 HasEncounteredError = true;
 
@@ -190,7 +196,9 @@ public sealed class SyntacticCSharpMethodAssociator
 
             UnparsedParametersByName.Remove(nameColonSyntax.Name.Identifier.Text);
 
-            QueryResponseCollector.Associations.Normal.Add(parameterSymbol, UnassociatedInvocationData.SyntacticArguments[index]);
+            var command = new AddNormalCSharpMethodAssociationCommand(parameter, UnassociatedInvocationData.SyntacticArguments[index]);
+
+            QueryResponseHandler.AssociationCollector.Normal.Handle(command);
         }
 
         private void AssociateParamsParameterArgument(
@@ -219,7 +227,9 @@ public sealed class SyntacticCSharpMethodAssociator
             int index,
             IReadOnlyList<ArgumentSyntax> syntacticArguments)
         {
-            QueryResponseCollector.Associations.Params.Add(UnassociatedInvocationData.Parameters[index], syntacticArguments);
+            var command = new AddParamsCSharpMethodAssociationCommand(UnassociatedInvocationData.Parameters[index], syntacticArguments);
+
+            QueryResponseHandler.AssociationCollector.Params.Handle(command);
 
             HasEncounteredParamsArgument = true;
         }
@@ -264,18 +274,18 @@ public sealed class SyntacticCSharpMethodAssociator
             int index)
         {
             var query = new IsCSharpMethodArgumentParamsQuery(UnassociatedInvocationData.Parameters[index], UnassociatedInvocationData.SyntacticArguments[index], UnassociatedInvocationData.SemanticModel);
-            var queryResponseCollector = new ValuedQueryResponseCollector<bool>();
+            var queryResponseHandler = new ValuedQueryResponseHandler<bool>();
 
-            ParamsArgumentIdentifier.Handle(query, queryResponseCollector);
+            ParamsArgumentIdentifier.Handle(query, queryResponseHandler);
 
-            if (queryResponseCollector.HasSetValue is false)
+            if (queryResponseHandler.HasSetValue is false)
             {
                 HasEncounteredError = true;
 
                 return false;
             }
 
-            return queryResponseCollector.GetValue();
+            return queryResponseHandler.GetValue();
         }
     }
 }
