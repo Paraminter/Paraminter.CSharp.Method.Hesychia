@@ -7,13 +7,18 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 
 using Paraminter.Associators.Queries;
+using Paraminter.CSharp.Method.Commands;
 using Paraminter.CSharp.Method.Hesychia.Queries;
-using Paraminter.CSharp.Method.Queries.Collectors;
-using Paraminter.Queries.Values.Collectors;
+using Paraminter.CSharp.Method.Queries.Handlers;
+using Paraminter.Queries.Handlers;
+using Paraminter.Queries.Invalidation.Commands;
+using Paraminter.Queries.Values.Commands;
+using Paraminter.Queries.Values.Handlers;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Xunit;
 
@@ -24,13 +29,13 @@ public sealed class Handle
     [Fact]
     public void NullQuery_ThrowsArgumentNullException()
     {
-        var result = Record.Exception(() => Target(null!, Mock.Of<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector>()));
+        var result = Record.Exception(() => Target(null!, Mock.Of<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler>()));
 
         Assert.IsType<ArgumentNullException>(result);
     }
 
     [Fact]
-    public void NullQueryResponseCollector_ThrowsArgumentNullException()
+    public void NullQueryResponseHandler_ThrowsArgumentNullException()
     {
         var result = Record.Exception(() => Target(Mock.Of<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>>(), null!));
 
@@ -47,14 +52,14 @@ public sealed class Handle
         parameter2SymbolMock.Setup(static (symbol) => symbol.Name).Returns("Foo");
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameter1SymbolMock.Object, parameter2SymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns([]);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Once());
     }
 
     [Fact]
@@ -67,14 +72,14 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(false);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns([]);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Once());
     }
 
     [Fact]
@@ -97,14 +102,14 @@ public sealed class Handle
         parameter2SymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(false);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameter1SymbolMock.Object, parameter2SymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Once());
     }
 
     [Fact]
@@ -127,14 +132,14 @@ public sealed class Handle
         parameter2SymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(false);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameter1SymbolMock.Object, parameter2SymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Once());
     }
 
     [Fact]
@@ -149,14 +154,14 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.Name).Returns("Foo");
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Once());
     }
 
     [Fact]
@@ -175,22 +180,22 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(true);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
         queryMock.Setup(static (query) => query.Data.SemanticModel).Returns(semanticModel);
 
-        Fixture.ParamsArgumentIdentifierMock.Setup(static (identifier) => identifier.Handle(It.IsAny<IIsCSharpMethodArgumentParamsQuery>(), It.IsAny<IValuedQueryResponseCollector<bool>>()))
-            .Callback<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>>((query, queryResponseCollector) => { });
+        Fixture.ParamsArgumentIdentifierMock.Setup(static (identifier) => identifier.Handle(It.IsAny<IIsCSharpMethodArgumentParamsQuery>(), It.IsAny<IValuedQueryResponseHandler<bool>>()))
+            .Callback<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>>((query, queryResponseHandler) => { });
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Once());
     }
 
     [Fact]
-    public void SingleArgumentOfParamsParameter_MakesCorrectQueryToIdentifier()
+    public void SingleArgumentOfParamsParameter_MakesCorrectQueryToParamsIdentifier()
     {
         var syntacticArguments = SyntaxFactory.ArgumentList(SyntaxFactory.SeparatedList([
             SyntaxFactory.Argument(SyntaxFactory.ParseExpression("42"))
@@ -205,28 +210,18 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(true);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
         queryMock.Setup(static (query) => query.Data.SemanticModel).Returns(semanticModel);
 
-        Fixture.ParamsArgumentIdentifierMock.Setup(static (identifier) => identifier.Handle(It.IsAny<IIsCSharpMethodArgumentParamsQuery>(), It.IsAny<IValuedQueryResponseCollector<bool>>()))
-            .Callback<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>>((query, queryResponseCollector) => { });
+        Fixture.ParamsArgumentIdentifierMock.Setup(static (identifier) => identifier.Handle(It.IsAny<IIsCSharpMethodArgumentParamsQuery>(), It.IsAny<IValuedQueryResponseHandler<bool>>()))
+            .Callback<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>>((query, queryResponseHandler) => { });
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        var verifyQueryDelegate = createVerifyQueryDelegate();
-
-        Fixture.ParamsArgumentIdentifierMock.Verify((identifier) => identifier.Handle(It.Is<IIsCSharpMethodArgumentParamsQuery>((query) => verifyQueryDelegate(query)), It.IsAny<IValuedQueryResponseCollector<bool>>()), Times.Once());
-
-        Func<IIsCSharpMethodArgumentParamsQuery, bool> createVerifyQueryDelegate()
-        {
-            return (query) =>
-            {
-                return ReferenceEquals(parameterSymbolMock.Object, query.Parameter) && ReferenceEquals(syntacticArguments[0], query.SyntacticArgument) && ReferenceEquals(semanticModel, query.SemanticModel);
-            };
-        }
+        Fixture.ParamsArgumentIdentifierMock.Verify(IsParamsExpression(parameterSymbolMock.Object, syntacticArguments[0], semanticModel), Times.Once());
     }
 
     [Fact]
@@ -244,21 +239,21 @@ public sealed class Handle
         parameter2SymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(false);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameter1SymbolMock.Object, parameter2SymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns([]);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify((collector) => collector.Associations.Default.Add(parameter1SymbolMock.Object), Times.Once());
-        queryResponseCollectorMock.Verify((collector) => collector.Associations.Default.Add(parameter2SymbolMock.Object), Times.Once());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Default.Add(It.IsAny<IParameterSymbol>()), Times.Exactly(2));
+        queryResponseHandlerMock.Verify(DefaultAssociationExpression(parameter1SymbolMock.Object), Times.Once());
+        queryResponseHandlerMock.Verify(DefaultAssociationExpression(parameter2SymbolMock.Object), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Default.Handle(It.IsAny<IAddDefaultCSharpMethodCommand>()), Times.Exactly(2));
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Normal.Add(It.IsAny<IParameterSymbol>(), It.IsAny<ArgumentSyntax>()), Times.Never());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Params.Add(It.IsAny<IParameterSymbol>(), It.IsAny<IReadOnlyList<ArgumentSyntax>>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Normal.Handle(It.IsAny<IAddNormalCSharpMethodAssociationCommand>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Params.Handle(It.IsAny<IAddParamsCSharpMethodAssociationCommand>()), Times.Never());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Never());
     }
 
     [Fact]
@@ -275,20 +270,20 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(false);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify((collector) => collector.Associations.Normal.Add(parameterSymbolMock.Object, syntacticArguments[0]), Times.Once());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Normal.Add(It.IsAny<IParameterSymbol>(), It.IsAny<ArgumentSyntax>()), Times.Once());
+        queryResponseHandlerMock.Verify(NormalAssociationExpression(parameterSymbolMock.Object, syntacticArguments[0]), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Normal.Handle(It.IsAny<IAddNormalCSharpMethodAssociationCommand>()), Times.Once());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Params.Add(It.IsAny<IParameterSymbol>(), It.IsAny<IReadOnlyList<ArgumentSyntax>>()), Times.Never());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Default.Add(It.IsAny<IParameterSymbol>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Params.Handle(It.IsAny<IAddParamsCSharpMethodAssociationCommand>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Default.Handle(It.IsAny<IAddDefaultCSharpMethodCommand>()), Times.Never());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Never());
     }
 
     [Fact]
@@ -301,20 +296,20 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(true);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns([]);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify((collector) => collector.Associations.Params.Add(parameterSymbolMock.Object, Array.Empty<ArgumentSyntax>()), Times.Once());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Params.Add(It.IsAny<IParameterSymbol>(), It.IsAny<IReadOnlyList<ArgumentSyntax>>()), Times.Once());
+        queryResponseHandlerMock.Verify(ParamsAssociationExpression(parameterSymbolMock.Object, []), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Params.Handle(It.IsAny<IAddParamsCSharpMethodAssociationCommand>()), Times.Once());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Normal.Add(It.IsAny<IParameterSymbol>(), It.IsAny<ArgumentSyntax>()), Times.Never());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Default.Add(It.IsAny<IParameterSymbol>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Normal.Handle(It.IsAny<IAddNormalCSharpMethodAssociationCommand>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Default.Handle(It.IsAny<IAddDefaultCSharpMethodCommand>()), Times.Never());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Never());
     }
 
     [Fact]
@@ -332,20 +327,20 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(true);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify((collector) => collector.Associations.Params.Add(parameterSymbolMock.Object, syntacticArguments.Take(2).ToList()), Times.Once());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Params.Add(It.IsAny<IParameterSymbol>(), It.IsAny<IReadOnlyList<ArgumentSyntax>>()), Times.Once());
+        queryResponseHandlerMock.Verify(ParamsAssociationExpression(parameterSymbolMock.Object, syntacticArguments.Take(2).ToList()), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Params.Handle(It.IsAny<IAddParamsCSharpMethodAssociationCommand>()), Times.Once());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Normal.Add(It.IsAny<IParameterSymbol>(), It.IsAny<ArgumentSyntax>()), Times.Never());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Default.Add(It.IsAny<IParameterSymbol>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Normal.Handle(It.IsAny<IAddNormalCSharpMethodAssociationCommand>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Default.Handle(It.IsAny<IAddDefaultCSharpMethodCommand>()), Times.Never());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Never());
     }
 
     [Fact]
@@ -364,27 +359,24 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(true);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
         queryMock.Setup(static (query) => query.Data.SemanticModel).Returns(semanticModel);
 
-        Fixture.ParamsArgumentIdentifierMock.Setup(static (identifier) => identifier.Handle(It.IsAny<IIsCSharpMethodArgumentParamsQuery>(), It.IsAny<IValuedQueryResponseCollector<bool>>()))
-            .Callback<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>>((query, queryResponseCollector) =>
-            {
-                queryResponseCollector.Value.Set(true);
-            });
+        Fixture.ParamsArgumentIdentifierMock.Setup(static (identifier) => identifier.Handle(It.IsAny<IIsCSharpMethodArgumentParamsQuery>(), It.IsAny<IValuedQueryResponseHandler<bool>>()))
+            .Callback<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>>((query, queryResponseHandler) => SetResponseValue(true, queryResponseHandler));
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify((collector) => collector.Associations.Params.Add(parameterSymbolMock.Object, syntacticArguments), Times.Once());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Params.Add(It.IsAny<IParameterSymbol>(), It.IsAny<IReadOnlyList<ArgumentSyntax>>()), Times.Once());
+        queryResponseHandlerMock.Verify(ParamsAssociationExpression(parameterSymbolMock.Object, syntacticArguments), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Params.Handle(It.IsAny<IAddParamsCSharpMethodAssociationCommand>()), Times.Once());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Normal.Add(It.IsAny<IParameterSymbol>(), It.IsAny<ArgumentSyntax>()), Times.Never());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Default.Add(It.IsAny<IParameterSymbol>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Normal.Handle(It.IsAny<IAddNormalCSharpMethodAssociationCommand>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Default.Handle(It.IsAny<IAddDefaultCSharpMethodCommand>()), Times.Never());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Never());
     }
 
     [Fact]
@@ -403,33 +395,97 @@ public sealed class Handle
         parameterSymbolMock.Setup(static (symbol) => symbol.IsParams).Returns(true);
 
         Mock<IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData>> queryMock = new();
-        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector> queryResponseCollectorMock = new() { DefaultValue = DefaultValue.Mock };
+        Mock<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Data.Parameters).Returns([parameterSymbolMock.Object]);
         queryMock.Setup(static (query) => query.Data.SyntacticArguments).Returns(syntacticArguments);
         queryMock.Setup(static (query) => query.Data.SemanticModel).Returns(semanticModel);
 
-        Fixture.ParamsArgumentIdentifierMock.Setup(static (identifier) => identifier.Handle(It.IsAny<IIsCSharpMethodArgumentParamsQuery>(), It.IsAny<IValuedQueryResponseCollector<bool>>()))
-            .Callback<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>>((query, queryResponseCollector) =>
-            {
-                queryResponseCollector.Value.Set(false);
-            });
+        Fixture.ParamsArgumentIdentifierMock.Setup(static (identifier) => identifier.Handle(It.IsAny<IIsCSharpMethodArgumentParamsQuery>(), It.IsAny<IValuedQueryResponseHandler<bool>>()))
+            .Callback<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>>((query, queryResponseHandler) => SetResponseValue(false, queryResponseHandler));
 
-        Target(queryMock.Object, queryResponseCollectorMock.Object);
+        Target(queryMock.Object, queryResponseHandlerMock.Object);
 
-        queryResponseCollectorMock.Verify((collector) => collector.Associations.Normal.Add(parameterSymbolMock.Object, syntacticArguments[0]), Times.Once());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Normal.Add(It.IsAny<IParameterSymbol>(), It.IsAny<ArgumentSyntax>()), Times.Once());
+        queryResponseHandlerMock.Verify(NormalAssociationExpression(parameterSymbolMock.Object, syntacticArguments[0]), Times.Once());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Normal.Handle(It.IsAny<IAddNormalCSharpMethodAssociationCommand>()), Times.Once());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Params.Add(It.IsAny<IParameterSymbol>(), It.IsAny<IReadOnlyList<ArgumentSyntax>>()), Times.Never());
-        queryResponseCollectorMock.Verify(static (collector) => collector.Associations.Default.Add(It.IsAny<IParameterSymbol>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Params.Handle(It.IsAny<IAddParamsCSharpMethodAssociationCommand>()), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.AssociationCollector.Default.Handle(It.IsAny<IAddDefaultCSharpMethodCommand>()), Times.Never());
 
-        queryResponseCollectorMock.Verify(static (collector) => collector.Invalidator.Invalidate(), Times.Never());
+        queryResponseHandlerMock.Verify(static (handler) => handler.Invalidator.Handle(It.IsAny<IInvalidateQueryResponseCommand>()), Times.Never());
+    }
+
+    private static void SetResponseValue<TValue>(
+        TValue value,
+        IValuedQueryResponseHandler<TValue> queryResponseHandler)
+    {
+        Mock<ISetQueryResponseValueCommand<TValue>> commandMock = new();
+
+        commandMock.Setup(static (command) => command.Value).Returns(value);
+
+        queryResponseHandler.Value.Handle(commandMock.Object);
+    }
+
+    private static Expression<Action<IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>>>> IsParamsExpression(
+        IParameterSymbol parameter,
+        ArgumentSyntax argument,
+        SemanticModel semanticModel)
+    {
+        return (handler) => handler.Handle(It.Is(MatchIsParamsQuery(parameter, argument, semanticModel)), It.IsAny<IValuedQueryResponseHandler<bool>>());
+    }
+
+    private static Expression<Func<IIsCSharpMethodArgumentParamsQuery, bool>> MatchIsParamsQuery(
+        IParameterSymbol parameter,
+        ArgumentSyntax argument,
+        SemanticModel semanticModel)
+    {
+        return (query) => ReferenceEquals(query.Parameter, parameter) && ReferenceEquals(query.SyntacticArgument, argument) && ReferenceEquals(query.SemanticModel, semanticModel);
+    }
+
+    private static Expression<Action<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler>> NormalAssociationExpression(
+        IParameterSymbol parameter,
+        ArgumentSyntax syntacticArgument)
+    {
+        return (handler) => handler.AssociationCollector.Normal.Handle(It.Is(MatchNormalAssociationCommand(parameter, syntacticArgument)));
+    }
+
+    private static Expression<Func<IAddNormalCSharpMethodAssociationCommand, bool>> MatchNormalAssociationCommand(
+        IParameterSymbol parameter,
+        ArgumentSyntax syntacticArgument)
+    {
+        return (command) => ReferenceEquals(command.Parameter, parameter) && ReferenceEquals(command.SyntacticArgument, syntacticArgument);
+    }
+
+    private static Expression<Action<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler>> ParamsAssociationExpression(
+        IParameterSymbol parameter,
+        IReadOnlyList<ArgumentSyntax> syntacticArguments)
+    {
+        return (handler) => handler.AssociationCollector.Params.Handle(It.Is(MatchParamsAssociationCommand(parameter, syntacticArguments)));
+    }
+
+    private static Expression<Func<IAddParamsCSharpMethodAssociationCommand, bool>> MatchParamsAssociationCommand(
+        IParameterSymbol parameter,
+        IReadOnlyList<ArgumentSyntax> syntacticArguments)
+    {
+        return (command) => ReferenceEquals(command.Parameter, parameter) && Enumerable.SequenceEqual(command.SyntacticArguments, syntacticArguments);
+    }
+
+    private static Expression<Action<IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler>> DefaultAssociationExpression(
+        IParameterSymbol parameter)
+    {
+        return (handler) => handler.AssociationCollector.Default.Handle(It.Is(MatchDefaultAssociationCommand(parameter)));
+    }
+
+    private static Expression<Func<IAddDefaultCSharpMethodCommand, bool>> MatchDefaultAssociationCommand(
+        IParameterSymbol parameter)
+    {
+        return (command) => ReferenceEquals(command.Parameter, parameter);
     }
 
     private void Target(
         IAssociateArgumentsQuery<IAssociateSyntacticCSharpMethodData> query,
-        IInvalidatingAssociateSyntacticCSharpMethodQueryResponseCollector queryResponseCollector)
+        IInvalidatingAssociateSyntacticCSharpMethodQueryResponseHandler queryResponseHandler)
     {
-        Fixture.Sut.Handle(query, queryResponseCollector);
+        Fixture.Sut.Handle(query, queryResponseHandler);
     }
 }

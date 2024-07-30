@@ -12,13 +12,10 @@
         <PackageVersion Include="Moq" Version="4.20.70" />
 
         <PackageVersion Include="Paraminter.Associators.Queries" Version="8.0.0-alpha.6" />
-        <PackageVersion Include="Paraminter.CSharp.Method.Common.Queries.Collectors" Version="8.0.0-alpha.2" />
+        <PackageVersion Include="Paraminter.CSharp.Method.Common.Queries.Handlers" Version="8.0.0-alpha.10" />
         <PackageVersion Include="Paraminter.Logo" Version="2.0.0-alpha.10" />
-        <PackageVersion Include="Paraminter.Queries" Version="8.0.0-alpha.30" />
-        <PackageVersion Include="Paraminter.Queries.Attempts.Collectors" Version="8.0.0-alpha.23" />
-        <PackageVersion Include="Paraminter.Queries.Collectors" Version="8.0.0-alpha.30" />
-        <PackageVersion Include="Paraminter.Queries.Handlers" Version="8.0.0-alpha.30" />
-        <PackageVersion Include="Paraminter.Queries.Values.Collectors" Version="8.0.0-alpha.2" />
+        <PackageVersion Include="Paraminter.Queries" Version="8.0.0-alpha.32" />
+        <PackageVersion Include="Paraminter.Queries.Values.Handlers" Version="8.0.0-alpha.6" />
 
         <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.24.0.89429" />
 

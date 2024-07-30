@@ -2,36 +2,39 @@
 
 using Microsoft.CodeAnalysis;
 
+using Paraminter.CSharp.Method.Hesychia.Common;
 using Paraminter.CSharp.Method.Hesychia.Queries;
 using Paraminter.Queries.Handlers;
-using Paraminter.Queries.Values.Collectors;
+using Paraminter.Queries.Values.Handlers;
 
 using System;
 
 /// <summary>Identifies <see langword="params"/> C# method arguments.</summary>
 public sealed class ParamsCSharpMethodArgumentIdentifier
-    : IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>>
+    : IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>>
 {
     /// <summary>Instantiates a <see cref="ParamsCSharpMethodArgumentIdentifier"/>, identifying <see langword="params"/> C# method arguments.</summary>
     public ParamsCSharpMethodArgumentIdentifier() { }
 
-    void IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseCollector<bool>>.Handle(
+    void IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>>.Handle(
         IIsCSharpMethodArgumentParamsQuery query,
-        IValuedQueryResponseCollector<bool> queryResponseCollector)
+        IValuedQueryResponseHandler<bool> queryResponseHandler)
     {
         if (query is null)
         {
             throw new ArgumentNullException(nameof(query));
         }
 
-        if (queryResponseCollector is null)
+        if (queryResponseHandler is null)
         {
-            throw new ArgumentNullException(nameof(queryResponseCollector));
+            throw new ArgumentNullException(nameof(queryResponseHandler));
         }
 
         var result = Handle(query);
 
-        queryResponseCollector.Value.Set(result);
+        var command = new SetQueryResponseValueCommand<bool>(result);
+
+        queryResponseHandler.Value.Handle(command);
     }
 
     private bool Handle(
