@@ -6,7 +6,7 @@
         <RootNamespace>Paraminter.CSharp.Method.Hesychia.Queries</RootNamespace>
         
         <PackageId>Paraminter.CSharp.Method.Hesychia.Queries</PackageId>
-        <Description>Defines queries related to a Paraminter associator of syntactic C# method arguments.</Description>
+        <Description>Defines queries for a Paraminter associator of syntactic C# method arguments.</Description>
     </PropertyGroup>
 
     <ItemGroup>

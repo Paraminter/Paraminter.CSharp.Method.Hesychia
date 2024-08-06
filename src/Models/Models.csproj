@@ -6,7 +6,7 @@
         <RootNamespace>Paraminter.CSharp.Method.Hesychia.Models</RootNamespace>
         
         <PackageId>Paraminter.CSharp.Method.Hesychia.Models</PackageId>
-        <Description>Defines models related to a Paraminter associator of syntactic C# method arguments.</Description>
+        <Description>Defines models for a Paraminter associator of syntactic C# method arguments.</Description>
     </PropertyGroup>
 
     <ItemGroup>

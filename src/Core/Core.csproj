@@ -4,7 +4,7 @@
         <AssemblyName>Paraminter.CSharp.Method.Hesychia</AssemblyName>
         
         <PackageId>Paraminter.CSharp.Method.Hesychia</PackageId>
-        <Description>Provides general implementations of services related to a Paraminter associator of syntactic C# method arguments.</Description>
+        <Description>Provides a Paraminter associator of syntactic C# method arguments.</Description>
     </PropertyGroup>
 
     <ItemGroup>
