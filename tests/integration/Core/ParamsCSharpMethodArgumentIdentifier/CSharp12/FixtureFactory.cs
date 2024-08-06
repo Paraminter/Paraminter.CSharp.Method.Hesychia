@@ -2,7 +2,6 @@
 
 using Paraminter.CSharp.Method.Hesychia.Queries;
 using Paraminter.Queries.Handlers;
-using Paraminter.Queries.Values.Handlers;
 
 internal static class FixtureFactory
 {
@@ -16,14 +15,14 @@ internal static class FixtureFactory
     private sealed class Fixture
         : IFixture
     {
-        private readonly IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>> Sut;
+        private readonly IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool> Sut;
 
         public Fixture(
-            IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>> sut)
+            IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool> sut)
         {
             Sut = sut;
         }
 
-        IQueryHandler<IIsCSharpMethodArgumentParamsQuery, IValuedQueryResponseHandler<bool>> IFixture.Sut => Sut;
+        IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool> IFixture.Sut => Sut;
     }
 }

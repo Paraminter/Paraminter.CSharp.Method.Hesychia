@@ -6,12 +6,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 
 using Paraminter.CSharp.Method.Hesychia.Queries;
-using Paraminter.Queries.Values.Commands;
-using Paraminter.Queries.Values.Handlers;
 
-using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 using Xunit;
 
@@ -20,7 +16,7 @@ public sealed class Handle
     private readonly IFixture Fixture = FixtureFactory.Create();
 
     [Fact]
-    public void Params_ImplicitlyConverted_RespondsWithTrue()
+    public void Params_ImplicitlyConverted_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -34,11 +30,11 @@ public sealed class Handle
             }
             """;
 
-        RespondsWithTrue(source);
+        ReturnsTrue(source);
     }
 
     [Fact]
-    public void Params_ExactType_RespondsWithTrue()
+    public void Params_ExactType_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -52,11 +48,11 @@ public sealed class Handle
             }
             """;
 
-        RespondsWithTrue(source);
+        ReturnsTrue(source);
     }
 
     [Fact]
-    public void Params_SameTypeExceptNullability_RespondsWithTrue()
+    public void Params_SameTypeExceptNullability_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -70,11 +66,11 @@ public sealed class Handle
             }
             """;
 
-        RespondsWithTrue(source);
+        ReturnsTrue(source);
     }
 
     [Fact]
-    public void Params_Null_RespondsTrue()
+    public void Params_Null_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -88,11 +84,11 @@ public sealed class Handle
             }
             """;
 
-        RespondsWithTrue(source);
+        ReturnsTrue(source);
     }
 
     [Fact]
-    public void NonParams_RespondsFalse()
+    public void NonParams_ReturnsFalse()
     {
         var source = """
             public class Foo
@@ -106,11 +102,11 @@ public sealed class Handle
             }
             """;
 
-        ResponseWithFalse(source);
+        ReturnsFalse(source);
     }
 
     [Fact]
-    public void NonParams_Null_RespondsFalse()
+    public void NonParams_Null_ReturnsFalse()
     {
         var source = """
             public class Foo
@@ -124,41 +120,28 @@ public sealed class Handle
             }
             """;
 
-        ResponseWithFalse(source);
+        ReturnsFalse(source);
     }
 
-    private static Expression<Action<IValuedQueryResponseHandler<TValue>>> SetValueExpression<TValue>(
-        TValue value)
+    private bool Target(
+        IIsCSharpMethodArgumentParamsQuery query)
     {
-        return (handler) => handler.Value.Handle(It.Is(MatchSetValueCommand(value)));
+        return Fixture.Sut.Handle(query);
     }
 
-    private static Expression<Func<ISetQueryResponseValueCommand<TValue>, bool>> MatchSetValueCommand<TValue>(
-        TValue value)
-    {
-        return (command) => Equals(command.Value, value);
-    }
-
-    private void Target(
-        IIsCSharpMethodArgumentParamsQuery query,
-        IValuedQueryResponseHandler<bool> queryResponseHandler)
-    {
-        Fixture.Sut.Handle(query, queryResponseHandler);
-    }
-
-    private void RespondsWithTrue(
+    private void ReturnsTrue(
         string source)
     {
-        RespondsWithValue(source, true);
+        ReturnsValue(source, true);
     }
 
-    private void ResponseWithFalse(
+    private void ReturnsFalse(
         string source)
     {
-        RespondsWithValue(source, false);
+        ReturnsValue(source, false);
     }
 
-    private void RespondsWithValue(
+    private void ReturnsValue(
         string source,
         bool expected)
     {
@@ -177,15 +160,13 @@ public sealed class Handle
         var syntacticArguments = methodInvocation.ArgumentList.Arguments;
 
         Mock<IIsCSharpMethodArgumentParamsQuery> queryMock = new();
-        Mock<IValuedQueryResponseHandler<bool>> queryResponseHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
         queryMock.Setup(static (query) => query.Parameter).Returns(parameters[0]);
         queryMock.Setup(static (query) => query.SyntacticArgument).Returns(syntacticArguments[0]);
         queryMock.Setup(static (query) => query.SemanticModel).Returns(semanticModel);
 
-        Target(queryMock.Object, queryResponseHandlerMock.Object);
+        var result = Target(queryMock.Object);
 
-        queryResponseHandlerMock.Verify(SetValueExpression(expected), Times.Once());
-        queryResponseHandlerMock.Verify(static (handler) => handler.Value.Handle(It.IsAny<ISetQueryResponseValueCommand<bool>>()), Times.Once());
+        Assert.Equal(expected, result);
     }
 }
