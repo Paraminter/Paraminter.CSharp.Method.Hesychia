@@ -98,7 +98,7 @@ public sealed class SyntacticCSharpMethodAssociator
             ICommandHandler<IRecordArgumentAssociationCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>> defaultRecorder,
             IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool> paramsArgumentIdentifier,
             ICommandHandler<IInvalidateArgumentAssociationsRecordCommand> invalidator,
-            IAssociateArgumentsCommand<IAssociateSyntacticCSharpMethodData> query)
+            IAssociateArgumentsCommand<IAssociateSyntacticCSharpMethodData> command)
         {
             NormalRecorder = normalRecorder;
             ParamsRecorder = paramsRecorder;
@@ -108,9 +108,9 @@ public sealed class SyntacticCSharpMethodAssociator
 
             Invalidator = invalidator;
 
-            UnassociatedInvocationData = query.Data;
+            UnassociatedInvocationData = command.Data;
 
-            UnparsedParameterSymbolsByName = new Dictionary<string, IParameterSymbol>(query.Data.Parameters.Count, StringComparer.Ordinal);
+            UnparsedParameterSymbolsByName = new Dictionary<string, IParameterSymbol>(command.Data.Parameters.Count, StringComparer.Ordinal);
         }
 
         private void Associate()
