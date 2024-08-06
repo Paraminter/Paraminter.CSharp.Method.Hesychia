@@ -9,6 +9,7 @@
         <PackageReference Include="xunit.runner.visualstudio" />
 
         <ProjectReference Include="$(SolutionDir)\src\Core\Core.csproj" />
+        <ProjectReference Include="$(SolutionDir)\src\Models\Models.csproj" />
         <ProjectReference Include="$(SolutionDir)\src\Queries\Queries.csproj" />
     </ItemGroup>
 
