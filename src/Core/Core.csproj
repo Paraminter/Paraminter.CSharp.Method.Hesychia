@@ -13,6 +13,7 @@
         <PackageReference Include="Paraminter.Commands.Handlers" />
         <PackageReference Include="Paraminter.Parameters.Method.Models" />
         <PackageReference Include="Paraminter.Queries.Handlers" />
+        <PackageReference Include="Paraminter.Recorders.Commands" />
 
         <ProjectReference Include="$(SolutionDir)\src\Models\Models.csproj" />
         <ProjectReference Include="$(SolutionDir)\src\Queries\Queries.csproj" />
