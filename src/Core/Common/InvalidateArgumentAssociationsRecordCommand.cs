@@ -1,6 +1,6 @@
 ﻿namespace Paraminter.CSharp.Method.Hesychia.Common;
 
-using Paraminter.Associators.Commands;
+using Paraminter.Recorders.Commands;
 
 internal sealed class InvalidateArgumentAssociationsRecordCommand
     : IInvalidateArgumentAssociationsRecordCommand

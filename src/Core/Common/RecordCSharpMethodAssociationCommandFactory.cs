@@ -1,8 +1,8 @@
 ﻿namespace Paraminter.CSharp.Method.Hesychia.Common;
 
-using Paraminter.Associators.Commands;
-using Paraminter.Associators.Models;
+using Paraminter.Arguments.Models;
 using Paraminter.Parameters.Method.Models;
+using Paraminter.Recorders.Commands;
 
 internal static class RecordCSharpMethodAssociationCommandFactory
 {
