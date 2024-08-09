@@ -2,8 +2,8 @@
 
 using Microsoft.CodeAnalysis;
 
+using Paraminter.Cqs.Handlers;
 using Paraminter.CSharp.Method.Hesychia.Queries;
-using Paraminter.Queries.Handlers;
 
 using System;
 

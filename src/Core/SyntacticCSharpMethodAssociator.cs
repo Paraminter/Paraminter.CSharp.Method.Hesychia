@@ -4,13 +4,12 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Paraminter.Arguments.CSharp.Method.Models;
-using Paraminter.Associators.Commands;
-using Paraminter.Commands.Handlers;
-using Paraminter.CSharp.Method.Hesychia.Common;
+using Paraminter.Commands;
+using Paraminter.Cqs.Handlers;
+using Paraminter.CSharp.Method.Hesychia.Commands;
 using Paraminter.CSharp.Method.Hesychia.Models;
 using Paraminter.CSharp.Method.Hesychia.Queries;
 using Paraminter.Parameters.Method.Models;
-using Paraminter.Queries.Handlers;
 using Paraminter.Recorders.Commands;
 
 using System;

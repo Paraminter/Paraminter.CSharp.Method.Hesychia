@@ -12,7 +12,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
 
-        <PackageReference Include="Paraminter.Queries" />
+        <PackageReference Include="Paraminter.Cqs.Queries" />
     </ItemGroup>
 
 </Project>

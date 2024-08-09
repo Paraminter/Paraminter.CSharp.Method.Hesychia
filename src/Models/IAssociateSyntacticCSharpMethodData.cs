@@ -3,7 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Paraminter.Associators.Models;
+using Paraminter.Models;
 
 using System.Collections.Generic;
 

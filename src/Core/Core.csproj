@@ -9,10 +9,10 @@
 
     <ItemGroup>
         <PackageReference Include="Paraminter.Arguments.CSharp.Method.Models" />
-        <PackageReference Include="Paraminter.Associators.Commands" />
-        <PackageReference Include="Paraminter.Commands.Handlers" />
+        <PackageReference Include="Paraminter.Commands" />
+        <PackageReference Include="Paraminter.Cqs.Commands.Handlers" />
         <PackageReference Include="Paraminter.Parameters.Method.Models" />
-        <PackageReference Include="Paraminter.Queries.Handlers" />
+        <PackageReference Include="Paraminter.Cqs.Queries.Handlers" />
         <PackageReference Include="Paraminter.Recorders.Commands" />
 
         <ProjectReference Include="$(SolutionDir)\src\Models\Models.csproj" />
