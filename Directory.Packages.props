@@ -12,14 +12,14 @@
         <PackageVersion Include="Moq" Version="4.20.70" />
 
         <PackageVersion Include="Paraminter.Arguments.CSharp.Method.Models" Version="8.0.0-alpha.8" />
-        <PackageVersion Include="Paraminter.Associators.Commands" Version="8.0.0-alpha.18" />
-        <PackageVersion Include="Paraminter.Associators.Models" Version="8.0.0-alpha.18" />
-        <PackageVersion Include="Paraminter.Commands.Handlers" Version="8.0.0-alpha.22" />
+        <PackageVersion Include="Paraminter.Commands" Version="8.1.0-alpha.2" />
+        <PackageVersion Include="Paraminter.Cqs.Commands.Handlers" Version="8.0.0-alpha.24" />
         <PackageVersion Include="Paraminter.Logo" Version="2.0.0-alpha.10" />
+        <PackageVersion Include="Paraminter.Models" Version="8.1.0-alpha.2" />
         <PackageVersion Include="Paraminter.Parameters.Method.Models" Version="8.0.0-alpha.35" />
-        <PackageVersion Include="Paraminter.Queries" Version="8.0.0-alpha.34" />
-        <PackageVersion Include="Paraminter.Queries.Handlers" Version="8.0.0-alpha.34" />
-        <PackageVersion Include="Paraminter.Recorders.Commands" Version="8.0.0-alpha.39" />
+        <PackageVersion Include="Paraminter.Cqs.Queries" Version="8.0.0-alpha.36" />
+        <PackageVersion Include="Paraminter.Cqs.Queries.Handlers" Version="8.0.0-alpha.36" />
+        <PackageVersion Include="Paraminter.Recorders.Commands" Version="8.0.0-alpha.41" />
 
         <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.24.0.89429" />
 

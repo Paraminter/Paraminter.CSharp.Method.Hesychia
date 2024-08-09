@@ -1,9 +1,7 @@
-﻿namespace Paraminter.CSharp.Method.Hesychia.Common;
+﻿namespace Paraminter.CSharp.Method.Hesychia.Queries;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-using Paraminter.CSharp.Method.Hesychia.Queries;
 
 internal sealed class IsCSharpMethodArgumentParamsQuery
     : IIsCSharpMethodArgumentParamsQuery

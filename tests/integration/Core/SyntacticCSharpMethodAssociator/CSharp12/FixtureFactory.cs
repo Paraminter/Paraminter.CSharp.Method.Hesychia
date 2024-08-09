@@ -3,12 +3,11 @@
 using Moq;
 
 using Paraminter.Arguments.CSharp.Method.Models;
-using Paraminter.Associators.Commands;
-using Paraminter.Commands.Handlers;
+using Paraminter.Commands;
+using Paraminter.Cqs.Handlers;
 using Paraminter.CSharp.Method.Hesychia.Models;
 using Paraminter.CSharp.Method.Hesychia.Queries;
 using Paraminter.Parameters.Method.Models;
-using Paraminter.Queries.Handlers;
 using Paraminter.Recorders.Commands;
 
 internal static class FixtureFactory

@@ -12,7 +12,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
 
-        <PackageReference Include="Paraminter.Associators.Models" />
+        <PackageReference Include="Paraminter.Models" />
     </ItemGroup>
 
 </Project>

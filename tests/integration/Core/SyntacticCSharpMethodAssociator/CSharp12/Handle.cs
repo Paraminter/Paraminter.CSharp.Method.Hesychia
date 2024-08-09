@@ -6,8 +6,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 
 using Paraminter.Arguments.CSharp.Method.Models;
-using Paraminter.Associators.Commands;
-using Paraminter.Commands.Handlers;
+using Paraminter.Commands;
+using Paraminter.Cqs.Handlers;
 using Paraminter.CSharp.Method.Hesychia.Models;
 using Paraminter.Parameters.Method.Models;
 using Paraminter.Recorders.Commands;
