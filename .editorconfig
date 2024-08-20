@@ -294,7 +294,7 @@ dotnet_diagnostic.IDE0083.severity = warning
 dotnet_diagnostic.IDE0090.severity = warning
 
 # Remove unnecessary equality operator
-dotnet_diagnostic.IDE0100.severity = warning
+dotnet_diagnostic.IDE0100.severity = none
 
 # Remove unnecessary discard
 dotnet_diagnostic.IDE0110.severity = warning

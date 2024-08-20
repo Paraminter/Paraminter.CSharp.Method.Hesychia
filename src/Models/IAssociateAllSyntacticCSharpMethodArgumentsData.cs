@@ -7,9 +7,9 @@ using Paraminter.Models;
 
 using System.Collections.Generic;
 
-/// <summary>Represents data used to associate syntactic C# method arguments.</summary>
-public interface IAssociateSyntacticCSharpMethodData
-    : IAssociateArgumentsData
+/// <summary>Represents data used to associate all syntactic C# method arguments with parameters.</summary>
+public interface IAssociateAllSyntacticCSharpMethodArgumentsData
+    : IAssociateAllArgumentsData
 {
     /// <summary>The method parameters.</summary>
     public abstract IReadOnlyList<IParameterSymbol> Parameters { get; }
