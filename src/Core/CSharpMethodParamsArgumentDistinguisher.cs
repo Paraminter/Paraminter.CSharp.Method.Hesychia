@@ -7,12 +7,12 @@ using Paraminter.CSharp.Method.Hesychia.Queries;
 
 using System;
 
-/// <summary>Identifies <see langword="params"/> C# method arguments.</summary>
-public sealed class ParamsCSharpMethodArgumentIdentifier
+/// <summary>Distinguishes between <see langword="params"/> and non-<see langword="params"/> C# method arguments.</summary>
+public sealed class CSharpMethodParamsArgumentDistinguisher
     : IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool>
 {
-    /// <summary>Instantiates a <see cref="ParamsCSharpMethodArgumentIdentifier"/>, identifying <see langword="params"/> C# method arguments.</summary>
-    public ParamsCSharpMethodArgumentIdentifier() { }
+    /// <summary>Instantiates a <see cref="CSharpMethodParamsArgumentDistinguisher"/>, distinguishing between <see langword="params"/> and non-<see langword="params"/> C# method arguments.</summary>
+    public CSharpMethodParamsArgumentDistinguisher() { }
 
     bool IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool>.Handle(
         IIsCSharpMethodArgumentParamsQuery query)
