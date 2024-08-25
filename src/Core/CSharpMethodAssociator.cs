@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-/// <summary>Associates C# method arguments with parameters.</summary>
+/// <summary>Associates syntactic C# method arguments with parameters.</summary>
 public sealed class CSharpMethodAssociator
     : ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>>
 {
@@ -29,10 +29,10 @@ public sealed class CSharpMethodAssociator
 
     private readonly ICSharpMethodAssociatorErrorHandler ErrorHandler;
 
-    /// <summary>Instantiates an associator of C# method arguments with parameters.</summary>
-    /// <param name="normalIndividualAssociator">Associates individual normal C# method arguments with parameters.</param>
-    /// <param name="paramsIndividualAssociator">Associates individual <see langword="params"/> C# method arguments with parameters.</param>
-    /// <param name="defaultIndividualAssociator">Associates individual default C# method arguments with parameters.</param>
+    /// <summary>Instantiates an associator of syntactic C# method arguments with parameters.</summary>
+    /// <param name="normalIndividualAssociator">Associates individual syntactic normal C# method arguments with parameters.</param>
+    /// <param name="paramsIndividualAssociator">Associates individual syntactic <see langword="params"/> C# method arguments with parameters.</param>
+    /// <param name="defaultIndividualAssociator">Associates individual syntactic default C# method arguments with parameters.</param>
     /// <param name="paramsArgumentDistinguisher">Distinguishes between <see langword="params"/> and non-<see langword="params"/> arguments.</param>
     /// <param name="errorHandler">Handles encountered errors.</param>
     public CSharpMethodAssociator(

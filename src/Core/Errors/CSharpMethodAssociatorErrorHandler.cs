@@ -15,7 +15,7 @@ public sealed class CSharpMethodAssociatorErrorHandler
     private readonly ICommandHandler<IHandleDuplicateParameterNamesCommand> DuplicateParameterNames;
     private readonly ICommandHandler<IHandleDuplicateArgumentsCommand> DuplicateArguments;
 
-    /// <summary>Instantiates a handler of errors encountered when associating C# method arguments with parameters.</summary>
+    /// <summary>Instantiates a handler of errors encountered when associating syntactic C# method arguments with parameters.</summary>
     /// <param name="missingRequiredArgument">Handles a missing required argument.</param>
     /// <param name="outOfOrderLabeledArgumentFollowedByUnlabeled">Handles an out-of-order labeled argument followed by an unlabeled argument.</param>
     /// <param name="unrecognizedLabeledArgument">Handles a labeled argument of an unrecognized parameter.</param>
