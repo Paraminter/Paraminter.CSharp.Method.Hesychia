@@ -30,10 +30,10 @@ public sealed class CSharpMethodAssociator
     private readonly ICSharpMethodAssociatorErrorHandler ErrorHandler;
 
     /// <summary>Instantiates an associator of syntactic C# method arguments with parameters.</summary>
-    /// <param name="normalIndividualAssociator">Associates individual syntactic normal C# method arguments with parameters.</param>
-    /// <param name="paramsIndividualAssociator">Associates individual syntactic <see langword="params"/> C# method arguments with parameters.</param>
-    /// <param name="defaultIndividualAssociator">Associates individual syntactic default C# method arguments with parameters.</param>
-    /// <param name="paramsArgumentDistinguisher">Distinguishes between <see langword="params"/> and non-<see langword="params"/> arguments.</param>
+    /// <param name="normalIndividualAssociator">Associates individual normal syntactic C# method arguments with parameters.</param>
+    /// <param name="paramsIndividualAssociator">Associates individual <see langword="params"/> syntactic C# method arguments with parameters.</param>
+    /// <param name="defaultIndividualAssociator">Associates individual default syntactic C# method arguments with parameters.</param>
+    /// <param name="paramsArgumentDistinguisher">Distinguishes between <see langword="params"/> and non-<see langword="params"/> syntactic C# method arguments.</param>
     /// <param name="errorHandler">Handles encountered errors.</param>
     public CSharpMethodAssociator(
         ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>> normalIndividualAssociator,
