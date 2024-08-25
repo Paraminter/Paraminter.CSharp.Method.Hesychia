@@ -3,7 +3,7 @@
 using Paraminter.Cqs.Handlers;
 using Paraminter.CSharp.Method.Hesychia.Errors.Commands;
 
-/// <summary>Handles errors encountered when associating C# method arguments with parameters.</summary>
+/// <summary>Handles errors encountered when associating syntactic C# method arguments with parameters.</summary>
 public interface ICSharpMethodAssociatorErrorHandler
 {
     /// <summary>Handles a missing required argument.</summary>

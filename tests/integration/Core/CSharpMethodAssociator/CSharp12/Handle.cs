@@ -51,7 +51,7 @@ public sealed class Handle
 
         var syntacticArguments = methodInvocation.ArgumentList.Arguments;
 
-        Mock<IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData>> commandMock = new();
+        Mock<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> commandMock = new();
 
         commandMock.Setup(static (command) => command.Data.Parameters).Returns(parameters);
         commandMock.Setup(static (command) => command.Data.SyntacticArguments).Returns(syntacticArguments);
@@ -101,7 +101,7 @@ public sealed class Handle
 
         var syntacticArguments = methodInvocation.ArgumentList.Arguments;
 
-        Mock<IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData>> commandMock = new();
+        Mock<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> commandMock = new();
 
         commandMock.Setup(static (command) => command.Data.Parameters).Returns(parameters);
         commandMock.Setup(static (command) => command.Data.SyntacticArguments).Returns(syntacticArguments);
@@ -149,7 +149,7 @@ public sealed class Handle
 
         var syntacticArguments = methodInvocation.ArgumentList.Arguments;
 
-        Mock<IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData>> commandMock = new();
+        Mock<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> commandMock = new();
 
         commandMock.Setup(static (command) => command.Data.Parameters).Returns(parameters);
         commandMock.Setup(static (command) => command.Data.SyntacticArguments).Returns(syntacticArguments);
@@ -231,7 +231,7 @@ public sealed class Handle
     }
 
     private void Target(
-        IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData> command)
+        IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData> command)
     {
         Fixture.Sut.Handle(command);
     }
