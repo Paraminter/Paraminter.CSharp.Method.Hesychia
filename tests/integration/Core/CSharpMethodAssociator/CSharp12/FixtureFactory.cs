@@ -30,7 +30,7 @@ internal static class FixtureFactory
     private sealed class Fixture
         : IFixture
     {
-        private readonly ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData>> Sut;
+        private readonly ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> Sut;
 
         private readonly Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> NormalIndividualAssociatorMock;
         private readonly Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> ParamsIndividualAssociatorMock;
@@ -41,7 +41,7 @@ internal static class FixtureFactory
         private readonly Mock<ICSharpMethodAssociatorErrorHandler> ErrorHandlerMock;
 
         public Fixture(
-            ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData>> sut,
+            ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> sut,
             Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> normalIndividualAssociatorMock,
             Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> paramsIndividualAssociatorMock,
             Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> defaultIndividualAssocitorMock,
@@ -59,7 +59,7 @@ internal static class FixtureFactory
             ErrorHandlerMock = errorHandlerMock;
         }
 
-        ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData>> IFixture.Sut => Sut;
+        ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> IFixture.Sut => Sut;
 
         Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> IFixture.NormalIndividualAssociatorMock => NormalIndividualAssociatorMock;
         Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> IFixture.ParamsIndividualAssociatorMock => ParamsIndividualAssociatorMock;

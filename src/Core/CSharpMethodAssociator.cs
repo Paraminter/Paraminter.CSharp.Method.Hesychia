@@ -19,7 +19,7 @@ using System.Linq;
 
 /// <summary>Associates C# method arguments with parameters.</summary>
 public sealed class CSharpMethodAssociator
-    : ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData>>
+    : ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>>
 {
     private readonly ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>> NormalIndividualAssociator;
     private readonly ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>> ParamsIndividualAssociator;
@@ -51,8 +51,8 @@ public sealed class CSharpMethodAssociator
         ErrorHandler = errorHandler ?? throw new ArgumentNullException(nameof(errorHandler));
     }
 
-    void ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData>>.Handle(
-        IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData> command)
+    void ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>>.Handle(
+        IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData> command)
     {
         if (command is null)
         {
@@ -70,7 +70,7 @@ public sealed class CSharpMethodAssociator
             ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>> defaultIndividualAssociator,
             IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool> paramsArgumentDistinguisher,
             ICSharpMethodAssociatorErrorHandler errorHandler,
-            IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData> command)
+            IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData> command)
         {
             var associator = new Associator(normalIndividualAssociator, paramsIndividualAssociator, defaultIndividualAssociator, paramsArgumentDistinguisher, errorHandler, command);
 
@@ -85,7 +85,7 @@ public sealed class CSharpMethodAssociator
 
         private readonly ICSharpMethodAssociatorErrorHandler ErrorHandler;
 
-        private readonly IAssociateAllSyntacticCSharpMethodArgumentsData UnassociatedInvocationData;
+        private readonly IAssociateAllCSharpMethodArgumentsData UnassociatedInvocationData;
 
         private readonly IDictionary<string, ParameterStatus> ParametersByName;
 
@@ -98,7 +98,7 @@ public sealed class CSharpMethodAssociator
             ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>> defaultIndividualAssociator,
             IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool> paramsArgumentDistinguisher,
             ICSharpMethodAssociatorErrorHandler errorHandler,
-            IAssociateAllArgumentsCommand<IAssociateAllSyntacticCSharpMethodArgumentsData> command)
+            IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData> command)
         {
             NormalIndividualAssociator = normalIndividualAssociator;
             ParamsIndividualAssociator = paramsIndividualAssociator;
