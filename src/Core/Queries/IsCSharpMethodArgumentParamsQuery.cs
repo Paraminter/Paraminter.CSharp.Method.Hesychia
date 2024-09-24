@@ -1,4 +1,4 @@
-﻿namespace Paraminter.CSharp.Method.Hesychia.Queries;
+﻿namespace Paraminter.Associating.CSharp.Method.Hesychia.Queries;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

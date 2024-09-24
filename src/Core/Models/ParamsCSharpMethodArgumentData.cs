@@ -1,4 +1,4 @@
-﻿namespace Paraminter.CSharp.Method.Hesychia.Models;
+﻿namespace Paraminter.Associating.CSharp.Method.Hesychia.Models;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 

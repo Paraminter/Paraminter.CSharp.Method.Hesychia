@@ -1,15 +1,15 @@
-﻿namespace Paraminter.CSharp.Method.Hesychia.Models;
+﻿namespace Paraminter.Associating.CSharp.Method.Hesychia.Models;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Paraminter.Models;
+using Paraminter.Associating.Models;
 
 using System.Collections.Generic;
 
-/// <summary>Represents data used to associate all syntactic C# method arguments with parameters.</summary>
-public interface IAssociateAllCSharpMethodArgumentsData
-    : IAssociateAllArgumentsData
+/// <summary>Represents data used to associate syntactic C# method arguments with parameters.</summary>
+public interface IAssociateCSharpMethodArgumentsData
+    : IAssociateArgumentsData
 {
     /// <summary>The method parameters.</summary>
     public abstract IReadOnlyList<IParameterSymbol> Parameters { get; }

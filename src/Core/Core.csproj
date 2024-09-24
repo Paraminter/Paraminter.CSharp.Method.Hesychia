@@ -1,18 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>Paraminter.CSharp.Method.Hesychia</AssemblyName>
+        <AssemblyName>Paraminter.Associating.CSharp.Method.Hesychia</AssemblyName>
         
-        <PackageId>Paraminter.CSharp.Method.Hesychia</PackageId>
+        <PackageId>Paraminter.Associating.CSharp.Method.Hesychia</PackageId>
         <Description>Provides a Paraminter associator of syntactic C# method arguments.</Description>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Paraminter.Arguments.CSharp.Method.Models" />
-        <PackageReference Include="Paraminter.Commands" />
+        <PackageReference Include="Paraminter.Associating.Commands" />
         <PackageReference Include="Paraminter.Cqs.Commands.Handlers" />
-        <PackageReference Include="Paraminter.Parameters.Method.Models" />
         <PackageReference Include="Paraminter.Cqs.Queries.Handlers" />
+        <PackageReference Include="Paraminter.Pairing.Commands" />
+        <PackageReference Include="Paraminter.Parameters.Method.Models" />
 
         <ProjectReference Include="$(SolutionDir)\src\Models\Models.csproj" />
         <ProjectReference Include="$(SolutionDir)\src\Queries\Queries.csproj" />

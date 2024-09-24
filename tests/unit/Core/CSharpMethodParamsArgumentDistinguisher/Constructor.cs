@@ -1,4 +1,4 @@
-﻿namespace Paraminter.CSharp.Method.Hesychia;
+﻿namespace Paraminter.Associating.CSharp.Method.Hesychia;
 
 using Xunit;
 

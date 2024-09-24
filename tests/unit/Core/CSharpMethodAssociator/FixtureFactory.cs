@@ -1,69 +1,70 @@
-﻿namespace Paraminter.CSharp.Method.Hesychia;
+﻿namespace Paraminter.Associating.CSharp.Method.Hesychia;
 
 using Moq;
 
 using Paraminter.Arguments.CSharp.Method.Models;
-using Paraminter.Commands;
+using Paraminter.Associating.Commands;
+using Paraminter.Associating.CSharp.Method.Hesychia.Errors;
+using Paraminter.Associating.CSharp.Method.Hesychia.Models;
+using Paraminter.Associating.CSharp.Method.Hesychia.Queries;
 using Paraminter.Cqs.Handlers;
-using Paraminter.CSharp.Method.Hesychia.Errors;
-using Paraminter.CSharp.Method.Hesychia.Models;
-using Paraminter.CSharp.Method.Hesychia.Queries;
+using Paraminter.Pairing.Commands;
 using Paraminter.Parameters.Method.Models;
 
 internal static class FixtureFactory
 {
     public static IFixture Create()
     {
-        Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> normalIndividualAssociatorMock = new();
-        Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> paramsIndividualAssociatorMock = new();
-        Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> defaultIndividualAssociatorMock = new();
+        Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> normalPairerMock = new();
+        Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> paramsPairerMock = new();
+        Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> defaultPairerMock = new();
 
         Mock<IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool>> paramsArgumentDistinguisherMock = new();
 
         Mock<ICSharpMethodAssociatorErrorHandler> errorHandlerMock = new() { DefaultValue = DefaultValue.Mock };
 
-        CSharpMethodAssociator sut = new(normalIndividualAssociatorMock.Object, paramsIndividualAssociatorMock.Object, defaultIndividualAssociatorMock.Object, paramsArgumentDistinguisherMock.Object, errorHandlerMock.Object);
+        CSharpMethodAssociator sut = new(normalPairerMock.Object, paramsPairerMock.Object, defaultPairerMock.Object, paramsArgumentDistinguisherMock.Object, errorHandlerMock.Object);
 
-        return new Fixture(sut, normalIndividualAssociatorMock, paramsIndividualAssociatorMock, defaultIndividualAssociatorMock, paramsArgumentDistinguisherMock, errorHandlerMock);
+        return new Fixture(sut, normalPairerMock, paramsPairerMock, defaultPairerMock, paramsArgumentDistinguisherMock, errorHandlerMock);
     }
 
     private sealed class Fixture
         : IFixture
     {
-        private readonly ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> Sut;
+        private readonly ICommandHandler<IAssociateArgumentsCommand<IAssociateCSharpMethodArgumentsData>> Sut;
 
-        private readonly Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> NormalIndividualAssociatorMock;
-        private readonly Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> ParamsIndividualAssociatorMock;
-        private readonly Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> DefaultIndividualAssociatorMock;
+        private readonly Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> NormalPairerMock;
+        private readonly Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> ParamsPairerMock;
+        private readonly Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> DefaultPairerMock;
 
         private readonly Mock<IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool>> ParamsArgumentDistinguisherMock;
 
         private readonly Mock<ICSharpMethodAssociatorErrorHandler> ErrorHandlerMock;
 
         public Fixture(
-            ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> sut,
-            Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> normalIndividualAssociatorMock,
-            Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> paramsIndividualAssociatorMock,
-            Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> defaultIndividualAssocitorMock,
+            ICommandHandler<IAssociateArgumentsCommand<IAssociateCSharpMethodArgumentsData>> sut,
+            Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> normalPairerMock,
+            Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> paramsPairerMock,
+            Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> defaultPairerMock,
             Mock<IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool>> paramsArgumentDistinguisherMock,
             Mock<ICSharpMethodAssociatorErrorHandler> errorHandlerMock)
         {
             Sut = sut;
 
-            NormalIndividualAssociatorMock = normalIndividualAssociatorMock;
-            ParamsIndividualAssociatorMock = paramsIndividualAssociatorMock;
-            DefaultIndividualAssociatorMock = defaultIndividualAssocitorMock;
+            NormalPairerMock = normalPairerMock;
+            ParamsPairerMock = paramsPairerMock;
+            DefaultPairerMock = defaultPairerMock;
 
             ParamsArgumentDistinguisherMock = paramsArgumentDistinguisherMock;
 
             ErrorHandlerMock = errorHandlerMock;
         }
 
-        ICommandHandler<IAssociateAllArgumentsCommand<IAssociateAllCSharpMethodArgumentsData>> IFixture.Sut => Sut;
+        ICommandHandler<IAssociateArgumentsCommand<IAssociateCSharpMethodArgumentsData>> IFixture.Sut => Sut;
 
-        Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> IFixture.NormalIndividualAssociatorMock => NormalIndividualAssociatorMock;
-        Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> IFixture.ParamsIndividualAssociatorMock => ParamsIndividualAssociatorMock;
-        Mock<ICommandHandler<IAssociateSingleArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> IFixture.DefaultIndividualAssociatorMock => DefaultIndividualAssociatorMock;
+        Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, INormalCSharpMethodArgumentData>>> IFixture.NormalPairerMock => NormalPairerMock;
+        Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, IParamsCSharpMethodArgumentData>>> IFixture.ParamsPairerMock => ParamsPairerMock;
+        Mock<ICommandHandler<IPairArgumentCommand<IMethodParameter, IDefaultCSharpMethodArgumentData>>> IFixture.DefaultPairerMock => DefaultPairerMock;
 
         Mock<IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool>> IFixture.ParamsArgumentDistinguisherMock => ParamsArgumentDistinguisherMock;
 

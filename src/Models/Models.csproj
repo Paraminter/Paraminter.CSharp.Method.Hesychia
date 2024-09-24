@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>Paraminter.CSharp.Method.Hesychia.Models</AssemblyName>
+        <AssemblyName>Paraminter.Associating.CSharp.Method.Hesychia.Models</AssemblyName>
 
-        <RootNamespace>Paraminter.CSharp.Method.Hesychia.Models</RootNamespace>
+        <RootNamespace>Paraminter.Associating.CSharp.Method.Hesychia.Models</RootNamespace>
         
-        <PackageId>Paraminter.CSharp.Method.Hesychia.Models</PackageId>
+        <PackageId>Paraminter.Associating.CSharp.Method.Hesychia.Models</PackageId>
         <Description>Defines models for a Paraminter associator of syntactic C# method arguments.</Description>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
 
-        <PackageReference Include="Paraminter.Models" />
+        <PackageReference Include="Paraminter.Associating.Models" />
     </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@
     <PropertyGroup>
         <LangVersion>12</LangVersion>
 
-        <RootNamespace>Paraminter.CSharp.Method.Hesychia</RootNamespace>
+        <RootNamespace>Paraminter.Associating.CSharp.Method.Hesychia</RootNamespace>
 
         <Nullable>enable</Nullable>
         <AnalysisMode>all</AnalysisMode>

@@ -1,4 +1,4 @@
-﻿namespace Paraminter.CSharp.Method.Hesychia.Errors.Commands;
+﻿namespace Paraminter.Associating.CSharp.Method.Hesychia.Errors.Commands;
 
 using Paraminter.Parameters.Method.Models;
 

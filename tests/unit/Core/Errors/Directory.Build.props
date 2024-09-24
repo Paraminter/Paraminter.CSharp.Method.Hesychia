@@ -3,7 +3,7 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <PropertyGroup>
-        <RootNamespace>Paraminter.CSharp.Method.Hesychia.Errors</RootNamespace>
+        <RootNamespace>Paraminter.Associating.CSharp.Method.Hesychia.Errors</RootNamespace>
     </PropertyGroup>
     
 </Project>
