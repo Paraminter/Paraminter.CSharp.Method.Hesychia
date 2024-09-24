@@ -299,6 +299,9 @@ dotnet_diagnostic.IDE0100.severity = none
 # Remove unnecessary discard
 dotnet_diagnostic.IDE0110.severity = warning
 
+# Namespace does not match folder structure
+dotnet_diagnostic.IDE0130.severity = warning
+
 # Prefer null check over type check
 dotnet_diagnostic.IDE0150.severity = warning
 

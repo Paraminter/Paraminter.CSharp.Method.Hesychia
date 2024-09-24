@@ -1,4 +1,4 @@
-# Paraminter.CSharp.Method.Hesychia
+# Paraminter.Associating.CSharp.Method.Hesychia
 
 Provides a `Paraminter` associator of syntactic C# method arguments.
 

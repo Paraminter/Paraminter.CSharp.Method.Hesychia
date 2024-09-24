@@ -1,11 +1,11 @@
-﻿namespace Paraminter.CSharp.Method.Hesychia;
+﻿namespace Paraminter.Associating.CSharp.Method.Hesychia;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Moq;
 
-using Paraminter.CSharp.Method.Hesychia.Queries;
+using Paraminter.Associating.CSharp.Method.Hesychia.Queries;
 
 using System.Linq;
 
