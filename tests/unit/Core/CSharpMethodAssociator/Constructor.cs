@@ -5,7 +5,7 @@ using Moq;
 using Paraminter.Arguments.CSharp.Method.Models;
 using Paraminter.Associating.CSharp.Method.Hesychia.Errors;
 using Paraminter.Associating.CSharp.Method.Hesychia.Queries;
-using Paraminter.Cqs.Handlers;
+using Paraminter.Cqs;
 using Paraminter.Pairing.Commands;
 using Paraminter.Parameters.Method.Models;
 

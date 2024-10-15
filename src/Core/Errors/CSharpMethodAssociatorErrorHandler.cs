@@ -1,7 +1,7 @@
 ﻿namespace Paraminter.Associating.CSharp.Method.Hesychia.Errors;
 
 using Paraminter.Associating.CSharp.Method.Hesychia.Errors.Commands;
-using Paraminter.Cqs.Handlers;
+using Paraminter.Cqs;
 
 using System;
 
