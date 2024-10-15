@@ -9,7 +9,7 @@ using Paraminter.Arguments.CSharp.Method.Models;
 using Paraminter.Associating.Commands;
 using Paraminter.Associating.CSharp.Method.Hesychia.Errors.Commands;
 using Paraminter.Associating.CSharp.Method.Hesychia.Models;
-using Paraminter.Cqs.Handlers;
+using Paraminter.Cqs;
 using Paraminter.Pairing.Commands;
 using Paraminter.Parameters.Method.Models;
 

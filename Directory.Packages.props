@@ -14,9 +14,9 @@
         <PackageVersion Include="Paraminter.Arguments.CSharp.Method.Models" Version="8.0.0-alpha.8" />
         <PackageVersion Include="Paraminter.Associating.Commands" Version="8.1.0-alpha.20" />
         <PackageVersion Include="Paraminter.Associating.Models" Version="8.1.0-alpha.20" />
-        <PackageVersion Include="Paraminter.Cqs.Commands.Handlers" Version="8.0.0-alpha.24" />
-        <PackageVersion Include="Paraminter.Cqs.Queries" Version="8.0.0-alpha.36" />
-        <PackageVersion Include="Paraminter.Cqs.Queries.Handlers" Version="8.0.0-alpha.36" />
+        <PackageVersion Include="Paraminter.Cqs.Commands.Handlers" Version="8.0.0-alpha.26" />
+        <PackageVersion Include="Paraminter.Cqs.Queries" Version="8.0.0-alpha.38" />
+        <PackageVersion Include="Paraminter.Cqs.Queries.Handlers" Version="8.0.0-alpha.38" />
         <PackageVersion Include="Paraminter.Logo" Version="2.0.0-alpha.10" />
         <PackageVersion Include="Paraminter.Pairing.Commands" Version="8.0.0-alpha.3" />
         <PackageVersion Include="Paraminter.Parameters.Method.Models" Version="8.0.0-alpha.35" />
