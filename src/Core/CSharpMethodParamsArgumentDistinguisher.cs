@@ -6,6 +6,8 @@ using Paraminter.Associating.CSharp.Method.Hesychia.Queries;
 using Paraminter.Cqs;
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 /// <summary>Distinguishes between <see langword="params"/> and non-<see langword="params"/> syntactic C# method arguments.</summary>
 public sealed class CSharpMethodParamsArgumentDistinguisher
@@ -14,8 +16,9 @@ public sealed class CSharpMethodParamsArgumentDistinguisher
     /// <summary>Instantiates a <see cref="CSharpMethodParamsArgumentDistinguisher"/>, distinguishing between <see langword="params"/> and non-<see langword="params"/> syntactic C# method arguments.</summary>
     public CSharpMethodParamsArgumentDistinguisher() { }
 
-    bool IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool>.Handle(
-        IIsCSharpMethodArgumentParamsQuery query)
+    async Task<bool> IQueryHandler<IIsCSharpMethodArgumentParamsQuery, bool>.Handle(
+        IIsCSharpMethodArgumentParamsQuery query,
+        CancellationToken cancellationToken)
     {
         if (query is null)
         {
@@ -34,6 +37,6 @@ public sealed class CSharpMethodParamsArgumentDistinguisher
 
         var expressedType = query.SemanticModel.GetTypeInfo(query.SyntacticArgument.Expression);
 
-        return SymbolEqualityComparer.Default.Equals(expressedType.ConvertedType, arrayType.ElementType);
+        return await Task.FromResult(SymbolEqualityComparer.Default.Equals(expressedType.ConvertedType, arrayType.ElementType));
     }
 }

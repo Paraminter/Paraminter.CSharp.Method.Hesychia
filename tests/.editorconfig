@@ -5,3 +5,6 @@ dotnet_diagnostic.CA1707.severity = none
 
 # Type names should not match namespaces
 dotnet_diagnostic.CA1724.severity = none
+
+# Do not directly await a Task
+dotnet_diagnostic.CA2007.severity = none

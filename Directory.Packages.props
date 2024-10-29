@@ -14,9 +14,9 @@
         <PackageVersion Include="Paraminter.Arguments.CSharp.Method.Models" Version="8.0.0-alpha.8" />
         <PackageVersion Include="Paraminter.Associating.Commands" Version="8.1.0-alpha.20" />
         <PackageVersion Include="Paraminter.Associating.Models" Version="8.1.0-alpha.20" />
-        <PackageVersion Include="Paraminter.Cqs.Commands.Handlers" Version="8.0.0-alpha.26" />
-        <PackageVersion Include="Paraminter.Cqs.Queries" Version="8.0.0-alpha.38" />
-        <PackageVersion Include="Paraminter.Cqs.Queries.Handlers" Version="8.0.0-alpha.38" />
+        <PackageVersion Include="Paraminter.Cqs.Commands.Handlers" Version="8.0.0-alpha.32" />
+        <PackageVersion Include="Paraminter.Cqs.Queries" Version="8.0.0-alpha.44" />
+        <PackageVersion Include="Paraminter.Cqs.Queries.Handlers" Version="8.0.0-alpha.44" />
         <PackageVersion Include="Paraminter.Logo" Version="2.0.0-alpha.10" />
         <PackageVersion Include="Paraminter.Pairing.Commands" Version="8.0.0-alpha.3" />
         <PackageVersion Include="Paraminter.Parameters.Method.Models" Version="8.0.0-alpha.35" />
@@ -24,7 +24,7 @@
         <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.24.0.89429" />
 
         <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-                
+
         <PackageVersion Include="xunit" Version="2.6.6" />
         <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.6" />
     </ItemGroup>
