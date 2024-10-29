@@ -9,6 +9,8 @@ using Paraminter.Associating.CSharp.Method.Hesychia.Queries;
 
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Xunit;
 
@@ -17,15 +19,15 @@ public sealed class Handle
     private readonly IFixture Fixture = FixtureFactory.Create();
 
     [Fact]
-    public void NullQuery_ThrowsArgumentNullException()
+    public async Task NullQuery_ThrowsArgumentNullException()
     {
-        var result = Record.Exception(() => Target(null!));
+        var result = await Record.ExceptionAsync(() => Target(null!, CancellationToken.None));
 
         Assert.IsType<ArgumentNullException>(result);
     }
 
     [Fact]
-    public void NotParamsParameter_ReturnsFalse()
+    public async Task NotParamsParameter_ReturnsFalse()
     {
         Mock<IParameterSymbol> parameterMock = new() { DefaultValue = DefaultValue.Mock };
 
@@ -35,13 +37,13 @@ public sealed class Handle
 
         queryMock.Setup(static (query) => query.Parameter).Returns(parameterMock.Object);
 
-        var result = Target(queryMock.Object);
+        var result = await Target(queryMock.Object, CancellationToken.None);
 
         Assert.False(result);
     }
 
     [Fact]
-    public void NotArraySymbol_ReturnsFalse()
+    public async Task NotArraySymbol_ReturnsFalse()
     {
         Mock<IParameterSymbol> parameterMock = new() { DefaultValue = DefaultValue.Mock };
 
@@ -51,13 +53,13 @@ public sealed class Handle
 
         queryMock.Setup(static (query) => query.Parameter).Returns(parameterMock.Object);
 
-        var result = Target(queryMock.Object);
+        var result = await Target(queryMock.Object, CancellationToken.None);
 
         Assert.False(result);
     }
 
     [Fact]
-    public void ArgumentNotOfElementType_ReturnsFalse()
+    public async Task ArgumentNotOfElementType_ReturnsFalse()
     {
         var source = """
             public class Foo
@@ -71,11 +73,11 @@ public sealed class Handle
             }
             """;
 
-        ReturnsValue(source, false);
+        await ReturnsValue(source, false, CancellationToken.None);
     }
 
     [Fact]
-    public void ArgumentOfElementType_ReturnsTrue()
+    public async Task ArgumentOfElementType_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -89,18 +91,20 @@ public sealed class Handle
             }
             """;
 
-        ReturnsValue(source, true);
+        await ReturnsValue(source, true, CancellationToken.None);
     }
 
-    private bool Target(
-        IIsCSharpMethodArgumentParamsQuery query)
+    private async Task<bool> Target(
+        IIsCSharpMethodArgumentParamsQuery query,
+        CancellationToken cancellationToken)
     {
-        return Fixture.Sut.Handle(query);
+        return await Fixture.Sut.Handle(query, cancellationToken);
     }
 
-    private void ReturnsValue(
+    private async Task ReturnsValue(
         string source,
-        bool expected)
+        bool expected,
+        CancellationToken cancellationToken)
     {
         var compilation = CompilationFactory.Create(source);
 
@@ -111,7 +115,7 @@ public sealed class Handle
         var syntaxTree = compilation.SyntaxTrees[0];
         var semanticModel = compilation.GetSemanticModel(syntaxTree);
 
-        var invokeMethod = syntaxTree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().Single(static (method) => method.Identifier.Text == "Invoke");
+        var invokeMethod = (await syntaxTree.GetRootAsync(CancellationToken.None)).DescendantNodes().OfType<MethodDeclarationSyntax>().Single(static (method) => method.Identifier.Text == "Invoke");
         var methodInvocation = invokeMethod.DescendantNodes().OfType<InvocationExpressionSyntax>().Single();
 
         var syntacticArguments = methodInvocation.ArgumentList.Arguments;
@@ -122,7 +126,7 @@ public sealed class Handle
         queryMock.Setup(static (query) => query.SyntacticArgument).Returns(syntacticArguments[0]);
         queryMock.Setup(static (query) => query.SemanticModel).Returns(semanticModel);
 
-        var result = Target(queryMock.Object);
+        var result = await Target(queryMock.Object, cancellationToken);
 
         Assert.Equal(expected, result);
     }

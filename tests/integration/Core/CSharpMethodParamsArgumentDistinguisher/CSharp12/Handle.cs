@@ -8,6 +8,8 @@ using Moq;
 using Paraminter.Associating.CSharp.Method.Hesychia.Queries;
 
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Xunit;
 
@@ -16,7 +18,7 @@ public sealed class Handle
     private readonly IFixture Fixture = FixtureFactory.Create();
 
     [Fact]
-    public void Params_ImplicitlyConverted_ReturnsTrue()
+    public async Task Params_ImplicitlyConverted_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -30,11 +32,11 @@ public sealed class Handle
             }
             """;
 
-        ReturnsTrue(source);
+        await ReturnsTrue(source, CancellationToken.None);
     }
 
     [Fact]
-    public void Params_ExactType_ReturnsTrue()
+    public async Task Params_ExactType_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -48,11 +50,11 @@ public sealed class Handle
             }
             """;
 
-        ReturnsTrue(source);
+        await ReturnsTrue(source, CancellationToken.None);
     }
 
     [Fact]
-    public void Params_SameTypeExceptNullability_ReturnsTrue()
+    public async Task Params_SameTypeExceptNullability_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -66,11 +68,11 @@ public sealed class Handle
             }
             """;
 
-        ReturnsTrue(source);
+        await ReturnsTrue(source, CancellationToken.None);
     }
 
     [Fact]
-    public void Params_Null_ReturnsTrue()
+    public async Task Params_Null_ReturnsTrue()
     {
         var source = """
             public class Foo
@@ -84,11 +86,11 @@ public sealed class Handle
             }
             """;
 
-        ReturnsTrue(source);
+        await ReturnsTrue(source, CancellationToken.None);
     }
 
     [Fact]
-    public void NonParams_ReturnsFalse()
+    public async Task NonParams_ReturnsFalse()
     {
         var source = """
             public class Foo
@@ -102,11 +104,11 @@ public sealed class Handle
             }
             """;
 
-        ReturnsFalse(source);
+        await ReturnsFalse(source, CancellationToken.None);
     }
 
     [Fact]
-    public void NonParams_Null_ReturnsFalse()
+    public async Task NonParams_Null_ReturnsFalse()
     {
         var source = """
             public class Foo
@@ -120,30 +122,34 @@ public sealed class Handle
             }
             """;
 
-        ReturnsFalse(source);
+        await ReturnsFalse(source, CancellationToken.None);
     }
 
-    private bool Target(
-        IIsCSharpMethodArgumentParamsQuery query)
+    private async Task<bool> Target(
+        IIsCSharpMethodArgumentParamsQuery query,
+        CancellationToken cancellationToken)
     {
-        return Fixture.Sut.Handle(query);
+        return await Fixture.Sut.Handle(query, cancellationToken);
     }
 
-    private void ReturnsTrue(
-        string source)
-    {
-        ReturnsValue(source, true);
-    }
-
-    private void ReturnsFalse(
-        string source)
-    {
-        ReturnsValue(source, false);
-    }
-
-    private void ReturnsValue(
+    private async Task ReturnsTrue(
         string source,
-        bool expected)
+        CancellationToken cancellationToken)
+    {
+        await ReturnsValue(source, true, cancellationToken);
+    }
+
+    private async Task ReturnsFalse(
+        string source,
+        CancellationToken cancellationToken)
+    {
+        await ReturnsValue(source, false, cancellationToken);
+    }
+
+    private async Task ReturnsValue(
+        string source,
+        bool expected,
+        CancellationToken cancellationToken)
     {
         var compilation = CompilationFactory.Create(source);
 
@@ -154,7 +160,7 @@ public sealed class Handle
         var syntaxTree = compilation.SyntaxTrees[0];
         var semanticModel = compilation.GetSemanticModel(syntaxTree);
 
-        var invokeMethod = syntaxTree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().Single(static (method) => method.Identifier.Text == "Invoke");
+        var invokeMethod = (await syntaxTree.GetRootAsync(CancellationToken.None)).DescendantNodes().OfType<MethodDeclarationSyntax>().Single(static (method) => method.Identifier.Text == "Invoke");
         var methodInvocation = invokeMethod.DescendantNodes().OfType<InvocationExpressionSyntax>().Single();
 
         var syntacticArguments = methodInvocation.ArgumentList.Arguments;
@@ -165,7 +171,7 @@ public sealed class Handle
         queryMock.Setup(static (query) => query.SyntacticArgument).Returns(syntacticArguments[0]);
         queryMock.Setup(static (query) => query.SemanticModel).Returns(semanticModel);
 
-        var result = Target(queryMock.Object);
+        var result = await Target(queryMock.Object, cancellationToken);
 
         Assert.Equal(expected, result);
     }
