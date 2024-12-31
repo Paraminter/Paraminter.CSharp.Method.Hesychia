@@ -3,8 +3,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Paraminter.Cqs;
-
 /// <summary>Represents a query for whether a syntactic C# method argument is a <see langword="params"/> argument.</summary>
 public interface IIsCSharpMethodArgumentParamsQuery
     : IQuery

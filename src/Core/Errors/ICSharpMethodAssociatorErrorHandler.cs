@@ -1,7 +1,6 @@
 ﻿namespace Paraminter.Associating.CSharp.Method.Hesychia.Errors;
 
 using Paraminter.Associating.CSharp.Method.Hesychia.Errors.Commands;
-using Paraminter.Cqs;
 
 /// <summary>Handles errors encountered when associating syntactic C# method arguments with parameters.</summary>
 public interface ICSharpMethodAssociatorErrorHandler

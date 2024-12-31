@@ -3,7 +3,6 @@
 using Microsoft.CodeAnalysis;
 
 using Paraminter.Associating.CSharp.Method.Hesychia.Queries;
-using Paraminter.Cqs;
 
 using System;
 using System.Threading;

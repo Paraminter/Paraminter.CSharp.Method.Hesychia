@@ -1,7 +1,6 @@
 ﻿namespace Paraminter.Associating.CSharp.Method.Hesychia;
 
 using Paraminter.Associating.CSharp.Method.Hesychia.Queries;
-using Paraminter.Cqs;
 
 internal static class FixtureFactory
 {
