@@ -3,7 +3,6 @@
 using Moq;
 
 using Paraminter.Associating.CSharp.Method.Hesychia.Errors.Commands;
-using Paraminter.Cqs;
 
 internal static class FixtureFactory
 {
